@@ -12,8 +12,8 @@ internal class ParserTest {
             Token.OpeningParenthesis, Token.Symbol("print"),
                 Token.OpeningParenthesis, Token.Symbol("+"), Token.IntLiteral(10), Token.IntLiteral(4000), Token.ClosingParenthesis,
             Token.ClosingParenthesis
-        )), Expression.LinkedList(Expression.Symbol("print"),
-            Expression.LinkedList(Expression.LinkedList(Expression.Symbol("+"), Expression.LinkedList(Expression.Int(10), Expression.LinkedList(Expression.Int(4000)))))
+        )), Expression.List(Expression.Symbol("print"),
+            Expression.List(Expression.List(Expression.Symbol("+"), Expression.List(Expression.Int(10), Expression.List(Expression.Int(4000)))))
         ))
     }
 }

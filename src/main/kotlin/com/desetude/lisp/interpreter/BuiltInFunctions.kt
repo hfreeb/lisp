@@ -3,7 +3,7 @@ package com.desetude.lisp.interpreter
 import com.desetude.lisp.ast.Expression
 
 object BuiltInFunctions {
-    fun plus(env: Environment, args: Expression.LinkedList?): Expression {
+    fun plus(env: Environment, args: Expression.List?): Expression {
         var total = 0
 
         var head = args
@@ -18,7 +18,7 @@ object BuiltInFunctions {
         return Expression.Int(total)
     }
 
-    fun minus(env: Environment, args: Expression.LinkedList?): Expression {
+    fun minus(env: Environment, args: Expression.List?): Expression {
         requireNotNull(args) { "Two arguments required for -, none given" }
         val a = Interpreter.eval(env, args.value)
         require(a is Expression.Int)
@@ -32,7 +32,7 @@ object BuiltInFunctions {
         return Expression.Int(a.value - b.value)
     }
 
-    fun multiply(env: Environment, args: Expression.LinkedList?): Expression {
+    fun multiply(env: Environment, args: Expression.List?): Expression {
         var product = 1
 
         var head = args
@@ -47,7 +47,7 @@ object BuiltInFunctions {
         return Expression.Int(product)
     }
 
-    fun print(env: Environment, args: Expression.LinkedList?): Expression {
+    fun print(env: Environment, args: Expression.List?): Expression {
         if (args == null) {
             return Expression.Nil
         }
@@ -55,7 +55,7 @@ object BuiltInFunctions {
         var head = args
         while (head != null) {
             when (val arg = Interpreter.eval(env, head.value)) {
-                is Expression.LinkedList -> {
+                is Expression.List -> {
                     print("(")
                     print(env, arg)
                     print(")")
@@ -74,7 +74,7 @@ object BuiltInFunctions {
         return Expression.T
     }
 
-    fun define(env: Environment, args: Expression.LinkedList?): Expression {
+    fun define(env: Environment, args: Expression.List?): Expression {
         requireNotNull(args) { "defun requires arguments a name" }
         val name = args.value
         require(name is Expression.Symbol) { "Name must be a symbol" }
@@ -84,14 +84,14 @@ object BuiltInFunctions {
         return func
     }
 
-    fun lambda(env: Environment, args: Expression.LinkedList?): Expression {
+    fun lambda(env: Environment, args: Expression.List?): Expression {
         return createFunction(args)
     }
 
-    private fun createFunction(definitionHead: Expression.LinkedList?): Expression.Function {
+    private fun createFunction(definitionHead: Expression.List?): Expression.Function {
         requireNotNull(definitionHead) { "Parameter list required" }
         val parameters = definitionHead.value
-        require(parameters is Expression.LinkedList) { "Parameters must be given as a list" }
+        require(parameters is Expression.List) { "Parameters must be given as a list" }
 
         val afterParams = definitionHead.next ?: throw IllegalArgumentException("Body of function required")
         val body = afterParams.value
@@ -100,11 +100,11 @@ object BuiltInFunctions {
         return Expression.Function(parameters, body)
     }
 
-    fun cond(env: Environment, args: Expression.LinkedList?): Expression {
+    fun cond(env: Environment, args: Expression.List?): Expression {
         var cond = args
         while (cond != null) {
             val conditional = cond.value
-            require(conditional is Expression.LinkedList) { "cond takes pairs of conditions and expressions" }
+            require(conditional is Expression.List) { "cond takes pairs of conditions and expressions" }
             val condition = conditional.value
             val afterCond = conditional.next
                 ?: throw IllegalStateException("Both a condition and an expression are required for cond")
@@ -121,7 +121,7 @@ object BuiltInFunctions {
         return Expression.Nil
     }
 
-    fun equal(env: Environment, args: Expression.LinkedList?): Expression {
+    fun equal(env: Environment, args: Expression.List?): Expression {
         requireNotNull(args) { "Two arguments are required for equal, none were given" }
         val first = args.value
         val secondNode = args.next

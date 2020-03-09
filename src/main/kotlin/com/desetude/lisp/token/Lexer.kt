@@ -16,7 +16,7 @@ object Lexer {
                 continue
             }
 
-            val char = buffer[0]
+            val char = buffer.first()
             when {
                 char == '(' -> tokens.add(Token.OpeningParenthesis)
                 char == ')' -> tokens.add(Token.ClosingParenthesis)

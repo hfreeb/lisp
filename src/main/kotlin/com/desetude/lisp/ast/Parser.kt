@@ -24,13 +24,13 @@ object Parser {
         }
     }
 
-    private fun readList(tokens: TokenIterator): Expression.LinkedList? {
+    private fun readList(tokens: TokenIterator): Expression.List? {
         if (tokens.peak() is Token.ClosingParenthesis) {
             return null
         }
 
         val head = readExpression(tokens)
         val next = readList(tokens)
-        return Expression.LinkedList(head, next)
+        return Expression.List(head, next)
     }
 }

@@ -23,8 +23,8 @@ fun main() {
         val result = when (val expr = Interpreter.eval(env, parsed)) {
             is Expression.Nil -> "NIL"
             is Expression.T -> "T"
-            is Expression.LinkedList -> "<list>"
-            is Expression.Symbol -> "<symbol>"
+            is Expression.List -> "<list>"
+            is Expression.Symbol -> expr.name
             is Expression.Int -> expr.value.toString()
             is Expression.Float -> expr.value.toString()
             is Expression.Function -> "<function>"

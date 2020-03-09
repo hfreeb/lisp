@@ -8,7 +8,7 @@ object Interpreter {
             is Expression.Float, is Expression.Int, is Expression.BuiltInFunction, is Expression.Function, is Expression.T, is Expression.Nil -> expression
             is Expression.Symbol -> env.lookup(expression.name)
                 ?: throw IllegalStateException("Variable with label ${expression.name} not found")
-            is Expression.LinkedList -> {
+            is Expression.List -> {
                 when (val func = eval(env, expression.value)) {
                     is Expression.BuiltInFunction -> func.handler(env, expression.next)
                     is Expression.Function -> callFunction(env, func, expression.next)
@@ -18,9 +18,9 @@ object Interpreter {
         }
     }
 
-    private fun callFunction(env: Environment, func: Expression.Function, args: Expression.LinkedList?): Expression {
+    private fun callFunction(env: Environment, func: Expression.Function, args: Expression.List?): Expression {
         val newEnv = Environment(env)
-        var headParams: Expression.LinkedList? = func.params
+        var headParams: Expression.List? = func.params
         var headArgs = args
         while (headParams != null && headArgs != null) {
             val param = headParams.value
