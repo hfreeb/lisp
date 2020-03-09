@@ -137,4 +137,8 @@ object BuiltInFunctions {
             Expression.Nil
         }
     }
+
+    fun quote(env: Environment, args: Expression.List?): Expression {
+        return args ?: throw IllegalStateException("quote requires at least one argument")
+    }
 }
