@@ -5,6 +5,7 @@ sealed class Token {
     object ClosingParenthesis : Token()
     object T : Token()
     object Nil : Token()
+    object Apostrophe : Token()
 
     data class Symbol(val name: String) : Token()
 

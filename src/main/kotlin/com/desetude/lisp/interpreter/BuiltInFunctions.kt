@@ -139,6 +139,7 @@ object BuiltInFunctions {
     }
 
     fun quote(env: Environment, args: Expression.List?): Expression {
-        return args ?: throw IllegalStateException("quote requires at least one argument")
+        require(args != null && args.next == null) { "quote takes one argument" }
+        return args.value
     }
 }

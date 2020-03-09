@@ -16,6 +16,7 @@ object Parser {
                 list ?: throw IllegalStateException("You can not create an empty list")
             }
             is Token.ClosingParenthesis -> throw IllegalStateException("Unexpected closing parenthesis")
+            is Token.Apostrophe -> Expression.List(Expression.Symbol("quote"), Expression.List(readExpression(tokens)))
             is Token.T -> Expression.T
             is Token.Nil -> Expression.Nil
             is Token.Symbol -> Expression.Symbol(head.name)

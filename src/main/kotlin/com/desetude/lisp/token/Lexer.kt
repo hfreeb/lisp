@@ -1,7 +1,7 @@
 package com.desetude.lisp.token
 
 object Lexer {
-    private val ATOM_PATTERN = Regex("\\A([^\\s()]+)(\\s|\\(|\\)|$)")
+    private val ATOM_PATTERN = Regex("\\A([^\\s()'][^\\s()]*)(\\s|\\(|\\)|$)")
 
     fun lex(program: String): List<Token> {
         val tokens = mutableListOf<Token>()
@@ -18,6 +18,7 @@ object Lexer {
 
             val char = buffer.first()
             when {
+                char == '\'' -> tokens.add(Token.Apostrophe)
                 char == '(' -> tokens.add(Token.OpeningParenthesis)
                 char == ')' -> tokens.add(Token.ClosingParenthesis)
                 char.isWhitespace() -> {}
