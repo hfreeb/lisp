@@ -75,7 +75,7 @@ object BuiltInFunctions {
     }
 
     fun define(env: Environment, args: Expression.List?): Expression {
-        requireNotNull(args) { "defun requires arguments a name" }
+        requireNotNull(args) { "define requires three arguments, none given" }
         val name = args.value
         require(name is Expression.Symbol) { "Name must be a symbol" }
 
