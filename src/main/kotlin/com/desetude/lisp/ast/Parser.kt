@@ -16,11 +16,11 @@ object Parser {
                 list ?: throw IllegalStateException("You can not create an empty list")
             }
             is Token.ClosingParenthesis -> throw IllegalStateException("Unexpected closing parenthesis")
+            is Token.T -> Expression.T
+            is Token.Nil -> Expression.Nil
             is Token.Symbol -> Expression.Symbol(head.name)
             is Token.IntLiteral -> Expression.Int(head.value)
             is Token.FloatLiteral -> Expression.Float(head.value)
-            is Token.T -> Expression.T
-            is Token.Nil -> Expression.Nil
         }
     }
 
