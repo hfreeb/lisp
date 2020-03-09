@@ -142,4 +142,18 @@ object BuiltInFunctions {
         require(args != null && args.next == null) { "quote takes one argument" }
         return args.value
     }
+
+    fun car(env: Environment, args: Expression.List?): Expression {
+        require(args != null && args.next == null) { "car expects one arguments" }
+        val arg = Interpreter.eval(env, args.value)
+        require(arg is Expression.List) { "car requires a list" }
+        return arg.value
+    }
+
+    fun cdr(env: Environment, args: Expression.List?): Expression {
+        require(args != null && args.next == null) { "cdr expects one arguments" }
+        val arg = Interpreter.eval(env, args.value)
+        require(arg is Expression.List) { "cdr requires a list" }
+        return arg.next ?: Expression.Nil
+    }
 }

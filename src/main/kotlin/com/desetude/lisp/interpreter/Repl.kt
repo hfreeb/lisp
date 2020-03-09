@@ -15,6 +15,8 @@ fun main() {
     env.set("cond", Expression.BuiltInFunction(BuiltInFunctions::cond))
     env.set("equal", Expression.BuiltInFunction(BuiltInFunctions::equal))
     env.set("quote", Expression.BuiltInFunction(BuiltInFunctions::quote))
+    env.set("car", Expression.BuiltInFunction(BuiltInFunctions::car))
+    env.set("cdr", Expression.BuiltInFunction(BuiltInFunctions::cdr))
 
     while (true) {
         print("> ")
