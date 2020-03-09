@@ -11,24 +11,7 @@ object Lexer {
             val match = ATOM_PATTERN.find(buffer)
             if (match != null) {
                 val symbol = match.groupValues[1]
-                if (symbol.equals("nil", ignoreCase = true)) {
-                    tokens.add(Token.Nil)
-                } else if (symbol.equals("t", ignoreCase = true)) {
-                    tokens.add(Token.T)
-                } else {
-                    val intValue = symbol.toIntOrNull()
-                    if (intValue != null) {
-                        tokens.add(Token.IntLiteral(intValue))
-                    } else {
-                        val floatValue = symbol.toFloatOrNull()
-                        if (floatValue != null) {
-                            tokens.add(Token.FloatLiteral(floatValue))
-                        } else {
-                            tokens.add(Token.Symbol(symbol))
-                        }
-                    }
-                }
-
+                tokens.add(identifyAtom(symbol))
                 buffer = buffer.drop(symbol.length)
                 continue
             }
@@ -37,13 +20,29 @@ object Lexer {
             when {
                 char == '(' -> tokens.add(Token.OpeningParenthesis)
                 char == ')' -> tokens.add(Token.ClosingParenthesis)
-                char.isWhitespace() -> {
-                }
+                char.isWhitespace() -> {}
                 else -> throw IllegalStateException("Failed to tokenize character: $char")
             }
             buffer = buffer.drop(1)
         }
 
         return tokens
+    }
+
+    private fun identifyAtom(symbol: String): Token {
+        if (symbol.equals("nil", ignoreCase = true)) {
+            return Token.Nil
+        } else if (symbol.equals("t", ignoreCase = true)) {
+            return Token.Nil
+        }
+
+        symbol.toIntOrNull()?.let {
+            return Token.IntLiteral(it)
+        }
+        symbol.toFloatOrNull()?.let {
+            return Token.FloatLiteral(it)
+        }
+
+        return Token.Symbol(symbol)
     }
 }
