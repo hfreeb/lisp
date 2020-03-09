@@ -34,7 +34,7 @@ object Lexer {
         if (symbol.equals("nil", ignoreCase = true)) {
             return Token.Nil
         } else if (symbol.equals("t", ignoreCase = true)) {
-            return Token.Nil
+            return Token.T
         }
 
         symbol.toIntOrNull()?.let {
