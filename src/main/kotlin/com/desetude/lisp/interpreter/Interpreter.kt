@@ -6,9 +6,10 @@ object Interpreter {
     fun eval(env: Environment, expression: Expression): Expression {
         return when (expression) {
             is Expression.Float, is Expression.Int, is Expression.BuiltInFunction, is Expression.Function, is Expression.T, is Expression.Nil -> expression
-            is Expression.Symbol -> env.lookup(expression.name) ?: throw IllegalStateException("Variable with label ${expression.name} not found")
+            is Expression.Symbol -> env.lookup(expression.name)
+                ?: throw IllegalStateException("Variable with label ${expression.name} not found")
             is Expression.LinkedList -> {
-                when(val func = eval(env, expression.value)) {
+                when (val func = eval(env, expression.value)) {
                     is Expression.BuiltInFunction -> func.handler(env, expression.next)
                     is Expression.Function -> callFunction(env, func, expression.next)
                     else -> throw IllegalStateException("First value in any s-expression must be a function")
